@@ -256,6 +256,11 @@
     <input id="slide-dot-4" name="slides" type="radio" hidden>
     <div class="slide slide-4" role="img" aria-label="Banner image 4"></div>
   </div> -->
+   {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info py-2 px-3">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
 
   {% if products %}
     <div class="products-wrapper" aria-label="Product list">
