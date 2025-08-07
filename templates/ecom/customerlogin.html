@@ -138,11 +138,7 @@
         <div class="subtext">Please sign in to continue to your account.</div>
       </div>
 
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-info py-2 px-3">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
+    
 
       <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
