@@ -225,6 +225,99 @@
       pointer-events: none;
     }
 
+
+  
+        /* Floating WhatsApp Button */
+.whatsapp-icon {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+    cursor: pointer;
+    animation: bounce 2s infinite;
+}
+
+.whatsapp-icon img {
+    width: 50px;
+    height: 50px;
+}
+
+/* Chat Popup Box */
+.whatsapp-chat-popup {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    width: 260px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    display: none;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.whatsapp-chat-popup.open {
+    display: block;
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #f0f0f0;
+    border-radius: 10px 10px 0 0;
+    font-size: 14px;
+}
+
+.chat-header img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.chat-header .close-chat {
+    margin-left: auto;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.chat-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #25d366;
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 0 0 10px 10px;
+    transition: background-color 0.3s ease;
+}
+
+.chat-button img {
+    width: 24px;
+    margin-right: 8px;
+}
+
+.chat-button:hover {
+    background-color: #1ebd5b;
+}
+
+/* Animations */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+
     .btn-accent {
       background: var(--accent);
       border: none;
@@ -444,5 +537,23 @@
       }
     });
   </script>
+
+
+
+ <div class="whatsapp-chat-popup" id="whatsapp-chat">
+    <div style="color: #0f1e38;" class="chat-header">
+        <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp Icon" />
+        <span>Hello 👋 How may we help you?<br><small>click word WhatsApp</small></span>
+        <span class="close-chat" onclick="document.getElementById('whatsapp-chat').classList.remove('open')">&times;</span>
+    </div>
+    <a href="https://wa.me/255676848521" target="_blank" class="chat-button">
+        <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" /> WhatsApp
+    </a>
+</div>
+
+<!-- Floating Button -->
+<div class="whatsapp-icon" onclick="document.getElementById('whatsapp-chat').classList.toggle('open')">
+    <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" />
+</div>
 </body>
 </html>
