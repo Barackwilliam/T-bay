@@ -1,0 +1,267 @@
+<!-- Tayari -->
+{% extends 'ecom/homebase.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  body, html {
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+  }
+
+  .section-title {
+    text-align: center;
+    color: #3E454C;
+    margin: 40px 0 20px;
+  }
+
+  .slider-container {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    margin-bottom: 30px;
+    height: 200px;
+  }
+
+  .menu {
+    position: absolute;
+    left: 0;
+    z-index: 900;
+    width: 100%;
+    bottom: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .menu label {
+    cursor: pointer;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    margin: 0 .2em;
+  }
+
+  .slide {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 100%;
+    z-index: 10;
+    background-size: cover;
+    background-position: 50% 50%;
+    transition: left .65s ease-out;
+    height: 100%;
+  }
+
+  [id^="slide"]:checked + .slide {
+    left: 0;
+    z-index: 100;
+  }
+
+  .slide-1 { background-image: url("{% static 'images/banner.png' %}"); }
+  .slide-2 { background-image: url("{% static 'images/banner.png' %}"); }
+  .slide-3 { background-image: url("{% static 'images/banner.png' %}"); }
+  .slide-4 { background-image: url("{% static 'images/banner.png' %}"); }
+
+  /* product grid */
+  .products-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    padding: 0 12px;
+    margin-bottom: 60px;
+  }
+
+  .product-card {
+    flex: 1 1 calc(33.33% - 40px);
+    max-width: 360px;
+    min-width: 260px;
+    background: #fff;
+    border-radius: 15px;
+    padding: 15px;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    transition: transform .2s ease-in-out;
+  }
+
+  .product-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .el-wrapper {
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    width: 100%;
+  }
+
+  .box-up {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+    transition: all .3s ease;
+  }
+
+  .info-inner {
+    position: relative;
+    margin-bottom: 6px;
+  }
+
+  .p-company {
+    background-color: #3e454c;
+    color: #fbfbfb;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
+
+  .a-size {
+    font-size: 13px;
+    color: #2b2b2b;
+    margin-top: 4px;
+    line-height: 1.2;
+  }
+
+  .box-down {
+    position: relative;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .price {
+    font-size: 16px;
+    font-weight: 600;
+    color: #252525;
+  }
+
+  .add-to-cart-wrapper {
+    position: relative;
+  }
+
+  .cart-link {
+    background: #3fcd7f;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+  }
+
+  .cart-link i {
+    margin-right: 4px;
+  }
+
+  @media (max-width: 1024px) {
+    .product-card {
+      flex: 1 1 calc(50% - 32px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .product-card {
+      flex: 1 1 100%;
+    }
+    .section-title {
+      margin-top: 20px;
+    }
+  }
+
+  .no-results {
+    text-align: center;
+    margin: 60px 0;
+    font-size: 1.25rem;
+    color: #3E454C;
+  }
+</style>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="slider-container">
+      <div class="menu">
+        <label for="slide-dot-1"></label>
+        <label for="slide-dot-2"></label>
+        <label for="slide-dot-3"></label>
+        <label for="slide-dot-4"></label>
+      </div>
+
+      <input id="slide-dot-1" type="radio" name="slides" checked>
+      <div class="slide slide-1"></div>
+
+      <input id="slide-dot-2" type="radio" name="slides">
+      <div class="slide slide-2"></div>
+
+      <input id="slide-dot-3" type="radio" name="slides">
+      <div class="slide slide-3"></div>
+
+      <input id="slide-dot-4" type="radio" name="slides">
+      <div class="slide slide-4"></div>
+    </div>
+  </div>
+</div>
+
+{% if products %}
+  <h3 class="section-title">{{ word }}</h3>
+
+  <div class="products-wrapper">
+    {% for p in products %}
+      <div class="product-card">
+        <div class="el-wrapper">
+          <div class="box-up">
+            <img class="img" src="{{ p.product_image}}" alt="{{ p.name }}" loading="lazy">
+            <div class="info-inner">
+              <span class="p-company">{{ p.name }}</span>
+              <div class="a-size">{{ p.description }}</div>
+            </div>
+          </div>
+          <div class="box-down">
+            <div class="price">Tsh. {{ p.price }}</div>
+            <div class="add-to-cart-wrapper">
+              <a class="cart-link" href="{% url 'add-to-cart' p.id %}">
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                Add To Cart
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="no-results">No Search Found</div>
+{% endif %}
+
+<script>
+  {% if messages %}
+    {% for message in messages %}
+      alert('{{ message }}');
+    {% endfor %}
+  {% endif %}
+</script>
+
+<div style="height: 60px;"></div>
+
+{% endblock content %}
