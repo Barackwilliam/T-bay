@@ -7,6 +7,27 @@ UPLOADCARE_PUBLIC_KEY = '76122001cca4add87f02'  # Badilisha kama una key nyingin
 
 from . import models
 
+from .models import Category
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
+    class Media:
+        js = [
+            'https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category_image'].widget.attrs.update({
+            'role': 'uploadcare-uploader',
+            'data-public-key': UPLOADCARE_PUBLIC_KEY,
+        })
+
+
 
 class CustomerUserForm(forms.ModelForm):
     class Meta:
@@ -61,7 +82,6 @@ class CustomerForm(forms.ModelForm):
             'data-public-key': UPLOADCARE_PUBLIC_KEY,
         })
 
-
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
@@ -78,3 +98,4 @@ class ProductForm(forms.ModelForm):
             'role': 'uploadcare-uploader',
             'data-public-key': UPLOADCARE_PUBLIC_KEY,
         })
+        self.fields['category'].empty_label = "Select Category"

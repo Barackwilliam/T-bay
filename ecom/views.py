@@ -5,20 +5,35 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib import messages
+from .models import Category,Product
+
 from django.conf import settings
 
 def home_view(request):
-    products=models.Product.objects.all()
+    categories = Category.objects.prefetch_related('products').all()
+
+    category_id = request.GET.get('category')
+    if category_id:
+        products = Product.objects.filter(category_id=category_id)
+    else:
+        products = Product.objects.all()
+
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
-        counter=product_ids.split('|')
-        product_count_in_cart=len(set(counter))
+        counter = product_ids.split('|')
+        product_count_in_cart = len(set(counter))
     else:
-        product_count_in_cart=0
+        product_count_in_cart = 0
+
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
-    return render(request,'ecom/index.html',{'products':products,'product_count_in_cart':product_count_in_cart})
-    
+
+    return render(request, 'ecom/index.html', {
+        'products': products,
+        'product_count_in_cart': product_count_in_cart,
+        'categories': categories,
+        'selected_category_id': int(category_id) if category_id else None
+    })
 
 
 #for showing login button for admin(by mr code)

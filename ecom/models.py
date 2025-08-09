@@ -6,7 +6,27 @@ from django.contrib.contenttypes.models import ContentType
 from cloudinary.models import CloudinaryField
 
 
+
+from django.db import models
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    category_image = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "Categories"
+
+    def __str__(self):
+        return self.name
+
     
+    def get_og_image_url(self):
+        return f"https://ucarecdn.com/{self.category_image}/-/resize/1200x630/-/format/auto/"
+
+    def get_image_url(self):
+        return f"https://ucarecdn.com/{self.category_image}/-/format/jpg/-/quality/smart/"
+
 
 
 # Create your models here.
@@ -35,23 +55,21 @@ class Customer(models.Model):
         return f"https://ucarecdn.com/{self.profile_pic}/-/format/jpg/-/quality/smart/"
 
 
-
 class Product(models.Model):
-    name=models.CharField(max_length=40)
-    product_image = models.CharField(max_length=255, blank=True, null=True) 
-    #product_image= models.ImageField(upload_to='product_image/',null=True,blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
+    name = models.CharField(max_length=40)
+    product_image = models.CharField(max_length=255, blank=True, null=True)
     price = models.PositiveIntegerField()
-    description=models.CharField(max_length=80)
+    description = models.CharField(max_length=500)
+
     def __str__(self):
         return self.name
 
     def get_og_image_url(self):
         return f"https://ucarecdn.com/{self.product_image}/-/resize/1200x630/-/format/auto/"
 
-    # Kwa frontend display optimized
     def get_image_url(self):
         return f"https://ucarecdn.com/{self.product_image}/-/format/jpg/-/quality/smart/"
-
 
 
 class Orders(models.Model):
@@ -61,8 +79,8 @@ class Orders(models.Model):
         ('Out for Delivery','Out for Delivery'),
         ('Delivered','Delivered'),
     )
-    customer=models.ForeignKey('Customer', on_delete=models.CASCADE,null=True)
-    product=models.ForeignKey('Product',on_delete=models.CASCADE,null=True)
+    customer=models.ForeignKey('Customer', on_delete=models.SET_NULL,null=True)
+    product=models.ForeignKey('Product',on_delete=models.SET_NULL,null=True)
     email = models.CharField(max_length=50,null=True)
     address = models.CharField(max_length=500,null=True)
     mobile = models.CharField(max_length=20,null=True)
@@ -72,7 +90,7 @@ class Orders(models.Model):
 
 class Feedback(models.Model):
     name=models.CharField(max_length=40)
-    feedback=models.CharField(max_length=500)
+    feedback=models.TextField()
     date= models.DateField(auto_now_add=True,null=True)
     def __str__(self):
         return self.name
