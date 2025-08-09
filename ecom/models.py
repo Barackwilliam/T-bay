@@ -43,9 +43,6 @@ class Customer(models.Model):
         return self.user.id
     def __str__(self):
         return self.user.first_name
-
-
-    
      # Kwa Open Graph preview
     def get_og_image_url(self):
         return f"https://ucarecdn.com/{self.profile_pic}/-/resize/1200x630/-/format/auto/"

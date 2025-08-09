@@ -128,6 +128,42 @@
       color: var(--accent-hover);
       text-decoration: underline;
     }
+
+    .signup-instructions {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #d0d9ff;
+}
+
+.signup-instructions li {
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.step-number {
+  display: inline-block;
+  min-width: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(255, 122, 41, 0.2);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  font-size: 1rem;
+  user-select: none;
+}
+
   </style>
 </head>
 <body>
@@ -137,6 +173,20 @@
         <h1>CUSTOMER SIGN UP</h1>
         <div class="subtext">Fill the form below to create your account.</div>
       </div>
+
+
+      <div class="signup-help" aria-live="polite">
+        <p style="text-align: center;"><strong>How to sign up:</strong></p>
+        <ul class="signup-instructions">
+          <li><span class="step-number">1.</span> Enter your <em>first name</em> and <em>last name</em>.</li>
+          <li><span class="step-number">2.</span> Choose a unique <em>username</em> for your account.</li>
+          <li><span class="step-number">3.</span> Create a secure <em>password</em> and remember it.</li>
+          <li><span class="step-number">4.</span> Fill in your <em>address</em> and <em>mobile number</em>.</li>
+          <li><span class="step-number">5.</span> Upload a <em>profile picture</em> (optional).</li>
+          <li><span class="step-number">6.</span> Click <strong>"Sign Up"</strong> to create your account.</li>
+        </ul>
+      </div>
+
 
       {% if messages %}
         {% for message in messages %}
@@ -178,8 +228,8 @@
         </div>
 
         <div class="mb-3">
-          <label class="field-label">Profile Picture</label>
-          {% render_field customerForm.profile_pic class="form-control-custom" %}
+        <label class="field-label">Profile Picture</label>
+        {% render_field customerForm.profile_pic class="form-control-custom" %}
         </div>
 
         <button type="submit" class="btn-primary-custom">Sign Up</button>
@@ -193,6 +243,7 @@
     </div>
   </div>
   <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+
 
 </body>
 </html>

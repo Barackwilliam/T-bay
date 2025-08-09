@@ -23,7 +23,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 SECRET_KEY = '#vw(03o=(9kbvg!&2d5i!2$_58x@_-3l4wujpow6(ym37jxnza'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
@@ -128,6 +128,8 @@ UPLOADCARE = {
     'pub_key': '76122001cca4add87f02',
     'secret': 'f00801b9b65172d50de5',
 }
+UPLOADCARE_PUBLIC_KEY = '76122001cca4add87f02'
+
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = 'https://res.cloudinary.com/drc3xiipg/'

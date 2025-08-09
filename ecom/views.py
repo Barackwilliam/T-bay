@@ -6,6 +6,10 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib import messages
 from .models import Category,Product
+from . import forms as my_forms
+from .forms import CustomerForm, CustomerUserForm
+
+
 
 from django.conf import settings
 
@@ -42,25 +46,31 @@ def adminclick_view(request):
         return HttpResponseRedirect('afterlogin')
     return HttpResponseRedirect('adminlogin')
 
-
 def customer_signup_view(request):
-    userForm=forms.CustomerUserForm()
-    customerForm=forms.CustomerForm()
-    mydict={'userForm':userForm,'customerForm':customerForm}
-    if request.method=='POST':
-        userForm=forms.CustomerUserForm(request.POST)
-        customerForm=forms.CustomerForm(request.POST,request.FILES)
+    userForm = my_forms.CustomerUserForm()
+    customerForm = CustomerForm()
+
+    if request.method == 'POST':
+        userForm = my_forms.CustomerUserForm(request.POST)
+        customerForm = CustomerForm(request.POST)
+
         if userForm.is_valid() and customerForm.is_valid():
-            user=userForm.save()
+            user = userForm.save()
             user.set_password(user.password)
             user.save()
-            customer=customerForm.save(commit=False)
-            customer.user=user
+
+            customer = customerForm.save(commit=False)
+            customer.user = user
             customer.save()
-            my_customer_group = Group.objects.get_or_create(name='CUSTOMER')
-            my_customer_group[0].user_set.add(user)
-        return HttpResponseRedirect('customerlogin')
-    return render(request,'ecom/customersignup.html',context=mydict)
+
+            Group.objects.get_or_create(name='CUSTOMER')[0].user_set.add(user)
+
+            return HttpResponseRedirect('customerlogin')
+
+    return render(request, 'ecom/customersignup.html', {
+        'userForm': userForm,
+        'customerForm': customerForm
+    })
 
 #-----------for checking user iscustomer
 def is_customer(user):
@@ -346,14 +356,30 @@ def send_feedback_view(request):
 @login_required(login_url='customerlogin')
 @user_passes_test(is_customer)
 def customer_home_view(request):
-    products=models.Product.objects.all()
+    categories = Category.objects.prefetch_related('products').all()
+
+    category_id = request.GET.get('category')
+    if category_id:
+        products = Product.objects.filter(category_id=category_id)
+    else:
+        products = Product.objects.all()
+
     if 'product_ids' in request.COOKIES:
         product_ids = request.COOKIES['product_ids']
-        counter=product_ids.split('|')
-        product_count_in_cart=len(set(counter))
+        counter = product_ids.split('|')
+        product_count_in_cart = len(set(counter))
     else:
-        product_count_in_cart=0
-    return render(request,'ecom/customer_home.html',{'products':products,'product_count_in_cart':product_count_in_cart})
+        product_count_in_cart = 0
+
+    # if request.user.is_authenticated:
+    #     return HttpResponseRedirect('afterlogin')
+
+    return render(request, 'ecom/customer_home.html', {
+        'products': products,
+        'product_count_in_cart': product_count_in_cart,
+        'categories': categories,
+        'selected_category_id': int(category_id) if category_id else None
+    })
 
 
 

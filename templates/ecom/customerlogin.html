@@ -32,21 +32,22 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 1rem;
     }
 
     .login-wrapper {
       width: 100%;
       max-width: 420px;
-      padding: 1px; /* gradient border */
-      border-radius: 16px;
+      padding: 1px;
+      border-radius: var(--radius);
       background: linear-gradient(135deg,#ff7a29,#6c63ff);
       box-shadow: var(--shadow);
-      margin: 16px;
+      margin: auto;
     }
 
     .login-card {
       background: var(--panel);
-      border-radius: 14px;
+      border-radius: var(--radius);
       padding: 36px 28px 28px;
       display: flex;
       flex-direction: column;
@@ -57,12 +58,15 @@
       font-size: 1.75rem;
       font-weight: 700;
       text-align: center;
+      letter-spacing: 2px;
     }
 
     .subtext {
       text-align: center;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--muted);
+      margin-bottom: 16px;
+      font-weight: 500;
     }
 
     .form-control-custom {
@@ -75,6 +79,10 @@
       font-size: 14px;
       outline: none;
       transition: var(--transition);
+      letter-spacing: 0.5px;
+    }
+    .form-control-custom::placeholder {
+      color: #bac6e0;
     }
     .form-control-custom:focus {
       border-color: var(--accent);
@@ -85,9 +93,9 @@
     .field-label {
       font-size: 0.75rem;
       font-weight: 600;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       color: #cbd6f1;
     }
 
@@ -102,25 +110,30 @@
       cursor: pointer;
       width: 100%;
       transition: background .25s;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(255,122,41,0.6);
     }
     .btn-primary-custom:hover {
       background: var(--accent-hover);
+      box-shadow: 0 6px 20px rgba(224,102,34,0.75);
     }
 
     .note {
       font-size: 0.75rem;
       text-align: center;
       color: var(--muted);
+      margin-top: 12px;
+      font-style: italic;
     }
 
     .signup-link {
       text-align: center;
       font-size: 0.85rem;
       margin-top: 12px;
+      font-weight: 600;
     }
     .signup-link a {
       color: var(--accent);
-      font-weight: 600;
       text-decoration: none;
       transition: color .2s;
     }
@@ -128,38 +141,94 @@
       color: var(--accent-hover);
       text-decoration: underline;
     }
+
+    .login-help {
+      font-size: 0.8rem;
+      color: #a3b1d1;
+      margin-bottom: 12px;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .login-help a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .login-instructions {
+  list-style: none; /* Ondoa bullets */
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Space kati ya steps */
+  font-size: 0.9rem;
+  color: #d0d9ff;
+}
+
+.login-instructions li {
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.step-number {
+  display: inline-block;
+  min-width: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(255, 122, 41, 0.2);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  font-size: 1rem;
+  user-select: none;
+}
+
   </style>
 </head>
 <body>
-  <div class="login-wrapper">
+  <div class="login-wrapper" role="main" aria-label="Customer login form">
     <div class="login-card">
-      <div>
+      <header>
         <h1>CUSTOMER LOGIN</h1>
-        <div class="subtext">Please sign in to continue to your account.</div>
-      </div>
+        <p class="subtext">Please sign in to continue to your account.</p>
+      </header>
 
-    
+      <section class="login-help" aria-live="polite">
+      <p><strong>How to login:</strong></p>
+      <ul class="login-instructions">
+        <li><span class="step-number">1.</span> Enter your <em>username</em> in the username field.</li>
+        <li><span class="step-number">2.</span> Type your <em>password</em> in the password field.</li>
+        <li><span class="step-number">3.</span> Click <strong>"Sign In"</strong> to access your account.</li>
+      </ul>
+    </section>
+
 
       <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
 
         <div class="mb-3">
           <label class="field-label" for="{{ form.username.id_for_label }}">Username</label>
-          {% render_field form.username class="form-control-custom" placeholder="Username" %}
+          {% render_field form.username class="form-control-custom" placeholder="Username" aria-required="true" %}
         </div>
 
         <div class="mb-3">
           <label class="field-label" for="{{ form.password.id_for_label }}">Password</label>
-          {% render_field form.password class="form-control-custom" placeholder="Password" type="password" %}
+          {% render_field form.password class="form-control-custom" placeholder="Password" type="password" aria-required="true" %}
         </div>
 
-        <button type="submit" class="btn-primary-custom">Sign In</button>
+        <button type="submit" class="btn-primary-custom" aria-label="Sign In to your account">Sign In</button>
 
-        <div class="signup-link">
-          Don't have an account? <a href="/customersignup">Sign Up</a>
-        </div>
+        <p class="signup-link">
+          Don't have an account? <a href="/customersignup" aria-label="Go to Sign Up page">Sign Up</a>
+        </p>
 
-        <div class="note">Your credentials are secure.</div>
+        <p class="note" role="note">Your credentials are secure.</p>
       </form>
     </div>
   </div>

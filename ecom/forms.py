@@ -1,7 +1,10 @@
 from django import forms
 from django.contrib.auth.models import User
 from django import forms
+
 from .models import Customer, Product
+from django.conf import settings
+
 
 UPLOADCARE_PUBLIC_KEY = '76122001cca4add87f02'  # Badilisha kama una key nyingine
 
@@ -65,22 +68,35 @@ class ContactusForm(forms.Form):
 
 
 
+
+
+
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = '__all__'
+        fields = ['address', 'mobile', 'profile_pic']
+        widgets = {
+            'profile_pic': forms.TextInput(attrs={
+                'role': 'uploadcare-uploader',
+                'data-public-key': settings.UPLOADCARE_PUBLIC_KEY
+            })
+        }
+# class CustomerForm(forms.ModelForm):
+#     class Meta:
+#         model = Customer
+#         fields = '__all__'
 
-    class Media:
-        js = [
-            'https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js',
-        ]
+#     class Media:
+#         js = [
+#             'https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js',
+#         ]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['profile_pic'].widget.attrs.update({
-            'role': 'uploadcare-uploader',
-            'data-public-key': UPLOADCARE_PUBLIC_KEY,
-        })
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.fields['profile_pic'].widget.attrs.update({
+#             'role': 'uploadcare-uploader',
+#             'data-public-key': UPLOADCARE_PUBLIC_KEY,
+#         })
 
 class ProductForm(forms.ModelForm):
     class Meta:
