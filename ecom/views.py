@@ -156,15 +156,28 @@ def admin_products_view(request):
 
 
 # admin add product by clicking on floating button
+# @login_required(login_url='adminlogin')
+# def admin_add_product_view(request):
+#     productForm=forms.ProductForm()
+#     if request.method=='POST':
+#         productForm=forms.ProductForm(request.POST, request.FILES)
+#         if productForm.is_valid():
+#             productForm.save()
+#         return HttpResponseRedirect('admin-products')
+#     return render(request,'ecom/admin_add_products.html',{'productForm':productForm})
+
+
+
+
 @login_required(login_url='adminlogin')
 def admin_add_product_view(request):
-    productForm=forms.ProductForm()
-    if request.method=='POST':
-        productForm=forms.ProductForm(request.POST, request.FILES)
+    productForm = forms.ProductForm()
+    if request.method == 'POST':
+        productForm = forms.ProductForm(request.POST, request.FILES)
         if productForm.is_valid():
             productForm.save()
-        return HttpResponseRedirect('admin-products')
-    return render(request,'ecom/admin_add_products.html',{'productForm':productForm})
+            return redirect('admin-products') 
+    return render(request, 'ecom/admin_add_products.html', {'productForm': productForm})
 
 
 @login_required(login_url='adminlogin')

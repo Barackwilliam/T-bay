@@ -3,7 +3,7 @@
 {% block content %}
 
 <head>
-  <title>Online Markerting Management System</title>
+  <title>Online Marketing Management System</title>
 
   <style media="screen">
     a:link {
@@ -13,10 +13,9 @@
     .note {
       text-align: center;
       height: 80px;
-      background: #0F2027;  /* fallback for old browsers */
-      background: -webkit-linear-gradient(to left, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-      background: linear-gradient(to left, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+      background: #0F2027;
+      background: -webkit-linear-gradient(to left, #2C5364, #203A43, #0F2027);
+      background: linear-gradient(to left, #2C5364, #203A43, #0F2027);
       color: #fff;
       font-weight: bold;
       line-height: 80px;
@@ -30,6 +29,7 @@
 
     .form-control {
       border-radius: 1.5rem;
+      margin-bottom: 1rem; /* Add some spacing between fields */
     }
 
     .btnSubmit {
@@ -41,8 +41,6 @@
       background: #009414;
       color: #fff;
     }
-
-    
 
     .menu {
       top: 50px;
@@ -64,25 +62,30 @@
       <div class="form-content">
         <div class="row">
           <div class="col-md-6">
+
+             <div class="form-group">
+              <label for="id_category">Category</label>
+              {% render_field productForm.category class="form-control" %}
+            </div>
             <div class="form-group">
-              <label for="">Product Name</label>
+              <label for="id_name">Product Name</label>
               {% render_field productForm.name class="form-control" placeholder="Product Name" %}
             </div>
             <div class="form-group">
-              <label for="">Product Description</label>
+              <label for="id_description">Product Description</label>
               {% render_field productForm.description class="form-control" placeholder="Description" %}
             </div>
+          
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="">Product Price</label>
+              <label for="id_price">Product Price</label>
               {% render_field productForm.price class="form-control" placeholder="Price" %}
             </div>
             <div class="form-group">
+              <label for="id_product_image">Product Image</label>
               {% render_field productForm.product_image class="form-control" placeholder="product_image" %}
             </div>
-
-
           </div>
         </div>
         <button type="submit" class="btnSubmit">Update</button>

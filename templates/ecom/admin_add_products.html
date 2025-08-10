@@ -46,9 +46,13 @@
     .menu {
       top: 50px;
     }
-  </style>
 
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+     .form-control {
+      border-radius: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
@@ -63,27 +67,30 @@
       <div class="form-content">
         <div class="row">
           <div class="col-md-6">
+
+             <div class="form-group">
+              <label for="id_category">Category</label>
+              {% render_field productForm.category class="form-control" %}
+            </div>
             <div class="form-group">
-              <label for="">Product Name</label>
+              <label for="id_name">Product Name</label>
               {% render_field productForm.name class="form-control" placeholder="Product Name" %}
             </div>
             <div class="form-group">
-              <label for="">Short Description</label>
+              <label for="id_description">Short Description</label>
               {% render_field productForm.description class="form-control" placeholder="Description" %}
             </div>
-
+           
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="">Product Price (Tsh)</label>
+              <label for="id_price">Product Price (Tsh)</label>
               {% render_field productForm.price class="form-control" placeholder="52" %}
             </div>
             <div class="form-group">
-              <label for="">Product Image</label>
+              <label for="id_product_image">Product Image</label>
               {% render_field productForm.product_image class="form-control" placeholder="product_image" %}
             </div>
-
-
           </div>
         </div>
         <button type="submit" class="btnSubmit">ADD</button>
@@ -91,6 +98,5 @@
     </div>
   </div>
 </form>
-
 
 {% endblock content %}

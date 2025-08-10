@@ -115,3 +115,4 @@ class ProductForm(forms.ModelForm):
             'data-public-key': UPLOADCARE_PUBLIC_KEY,
         })
         self.fields['category'].empty_label = "Select Category"
+

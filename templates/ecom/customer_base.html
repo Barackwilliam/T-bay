@@ -415,6 +415,33 @@
       margin-right: 12px;
       font-size: 1rem;
     }
+
+
+  @keyframes cart-bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+  60% {
+    transform: translateY(-4px);
+  }
+}
+
+.cart-btn.bouncing {
+  animation: cart-bounce 1s ease-in-out infinite;
+}
+
+.cart-badge {
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  margin-left: 0.3rem;
+}
+
   </style>
   <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
 </head>
@@ -426,6 +453,7 @@
     <a href="/" class="brand"><span>T-Bay</span> Tanzania</a>
     <ul class="nav-links">
       {% if request.user.is_authenticated %}
+        <li><a href="/" class="nav-link">Home</a></li>
         <li><a href="/my-order" class="nav-link">My Orders</a></li>
         <li><a href="/my-profile" class="nav-link">Profile</a></li>
         <li>
@@ -457,17 +485,75 @@
 
       <div class="search-cart-wrapper">
         <div class="search-wrapper">
-          <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-          <form action="/search" method="get" role="search">
-            <input class="search-input" type="search" name="query" placeholder="Search for products" aria-label="Search" />
-          </form>
-        </div>
+            <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <form action="/search" method="get" role="search">
+              <input class="search-input" type="search" name="query" id="animatedSearch"
+                    placeholder="" aria-label="Search" />
+            </form>
+          </div>
 
-        <a href="/cart" class="cart-btn" aria-label="View cart">
-          <i class="fa-solid fa-cart-shopping"></i>
-          <span>Cart</span>
-          <span class="cart-badge">{{ product_count_in_cart }}</span>
-        </a>
+          <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const input = document.getElementById("animatedSearch");
+
+            // Maneno ambayo yatakuwa yakijiandika
+            const placeholders = [
+              "Search for products",
+              "Looking for smartphone or Laptop..?",
+              "Or Looking for clothes..?",
+              "Find your next gadget",
+              "Type to search..."
+            ];
+
+            let wordIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function typeEffect() {
+              let currentWord = placeholders[wordIndex];
+
+              if (!isDeleting) {
+                // Kuandika taratibu
+                input.setAttribute("placeholder", currentWord.substring(0, charIndex + 1));
+                charIndex++;
+
+                if (charIndex === currentWord.length) {
+                  isDeleting = true;
+                  setTimeout(typeEffect, 1500); // Subiri kidogo kabla ya kufuta
+                  return;
+                }
+              } else {
+                // Kufuta taratibu
+                input.setAttribute("placeholder", currentWord.substring(0, charIndex - 1));
+                charIndex--;
+
+                if (charIndex === 0) {
+                  isDeleting = false;
+                  wordIndex = (wordIndex + 1) % placeholders.length; // Neno lijalo
+                }
+              }
+              setTimeout(typeEffect, isDeleting ? 50 : 100);
+            }
+
+            typeEffect();
+          });
+          </script>
+
+
+       <!-- <a href="/cart" class="cart-btn" aria-label="View cart" id="cartButton">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>Cart</span>
+        <span class="cart-badge" id="cartBadge">{{ product_count_in_cart }}</span>
+      </a> -->
+
+     <a href="/cart" 
+        class="cart-btn {% if product_count_in_cart|default:0 > 0 %}bouncing{% endif %}" 
+        aria-label="View cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>Cart</span>
+        <span class="cart-badge">{{ product_count_in_cart|default:0 }}</span>
+      </a>
+ 
 
         {% if not request.user.is_authenticated %}
         <!-- <a href="/customerlogin" class="btn-accent">Get Started</a> -->
@@ -547,5 +633,16 @@
 <div class="whatsapp-icon" onclick="document.getElementById('whatsapp-chat').classList.toggle('open')">
     <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" />
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const cartBtn = document.getElementById("cartButton");
+  const cartCount = parseInt(document.getElementById("cartBadge").textContent) || 0;
+
+  if (cartCount > 0) {
+    cartBtn.classList.add("bouncing");
+  }
+});
+</script>
 </body>
 </html>
