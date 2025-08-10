@@ -325,9 +325,7 @@
 
 
 
-
-
-
+  
   /* ====== POPUP STYLES ====== */
 .cart-popup {
   position: fixed;
@@ -367,6 +365,9 @@
   font-size: 0.85rem;
   color: var(--surface);
 }
+
+
+
 
 .no-results {
   min-height: 60vh; /* inafaa kwa centering */
@@ -417,7 +418,6 @@
   background-color: #e65a5a;
   transform: translateY(-2px);
 }
-
 </style>
 
       <!-- ====== POPUP SUCCESS ====== -->
@@ -430,9 +430,7 @@
 </div>
 
 
-
-
-   {% if not products %}
+    {% if not products %}
     <div class="no-results">
         <i class="fa-solid fa-magnifying-glass"></i> 
         <h1>No Products Found</h1>
@@ -441,8 +439,6 @@
       </div> 
 
       {% endif %}
-
-
 
 
 <!-- ========== CATEGORIES SECTION ========== -->
@@ -467,30 +463,27 @@
 <section class="products-section">
   <div class="products-grid">
     {% for product in products %}
-      <div class="product-card">
-        {% if product.discount %}
-          <span class="product-badge">-{{ product.discount }}%</span>
-        {% endif %}
-        <div class="product-img-container">
-          <img src="{{ product.product_image }}" alt="{{ product.name }}"
-               class="product-img"
-               onerror="this.src='{% static 'images/placeholder.png' %}'">
-        </div>
-        <div class="product-info">
-          <h3 class="product-title">{{ product.name }}</h3>
-          <p class="product-description">{{ product.description|truncatechars:80 }}</p>
-          <div class="product-footer">
-            <span class="product-price">Tsh. {{ product.price }}</span>
-            <button class="add-to-cart" data-url="{% url 'add-to-cart' product.id %}">
-              <i class="fas fa-shopping-cart"></i> Add
-            </button>
-          </div>
+    <div class="product-card">
+      {% if product.discount %}
+      <span class="product-badge">-{{ product.discount }}%</span>
+      {% endif %}
+      <div class="product-img-container">
+  <img src="{{ product.product_image }}" alt="{{ product.name }}" class="product-img" onerror="this.src='{% static 'images/placeholder.png' %}'">
+   </div>
+      <div class="product-info">
+        <h3 class="product-title">{{ product.name }}</h3>
+        <p class="product-description">{{ product.description|truncatechars:80 }}</p>
+        <div class="product-footer">
+          <span class="product-price">Tsh. {{ product.price }}</span>
+          <button class="add-to-cart" onclick="window.location.href='{% url 'add-to-cart' product.id %}'">
+            <i class="fas fa-shopping-cart"></i> Add
+          </button>
         </div>
       </div>
+    </div>
     {% endfor %}
   </div>
 </section>
-
 
 <!-- ========== AUTO-SLIDING CATEGORIES ========== -->
 <script>
@@ -552,6 +545,7 @@
   });
 </script>
 
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const popup = document.getElementById("cartPopup");
@@ -577,5 +571,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 </script>
+
 
 {% endblock content %}
